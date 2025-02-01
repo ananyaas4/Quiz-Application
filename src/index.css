@@ -69,18 +69,36 @@ body {
   background-color: #0056b3;
 }
 
-.error {
+.login-container .error {
   color: #d32f2f;
-  margin-top: 10px;
-  font-size: 14px;
+  margin: 20px 0;
+  font-size: 18px;
   text-align: center;
 }
 
 .quiz-container {
-  max-width: 600px;
-  margin: auto;
-  padding: 20px;
+  max-width: 700px;
+  margin: 30px auto;
   text-align: center;
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.quiz-container .startQuiz{
+  margin-top: 10px;
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
+  background: #05b305;
+  color: white;
+  border-radius: 5px;
+}
+
+.quiz-container .startQuiz:hover {
+  background: #048c04;
 }
 
 .quiz-item {
@@ -168,13 +186,6 @@ ul {
   font-weight: bold;
 }
 
-.quiz-container {
-  padding: 20px;
-  max-width: 800px;
-  margin: 0 auto;
-  text-align: center;
-}
-
 .quiz-item {
   margin-bottom: 20px;
   padding: 20px;
@@ -250,23 +261,26 @@ button:focus {
   outline: none;
 }
 
-/* Styling for result page */
 .result-container {
-  padding: 20px;
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 700px;
+  margin: 30px auto;
   text-align: center;
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
 .result-container h2 {
   font-size: 32px;
-  font-weight: bold;
   margin-bottom: 20px;
 }
 
 .score {
   font-size: 24px;
   font-weight: bold;
+  color:#05b305;
   margin-bottom: 30px;
 }
 

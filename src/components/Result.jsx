@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { useAuth } from "../context/AuthContext";
 
 const Result = () => {
-  const { user } = useAuth();
+  const { userId } = useParams();
   const navigate = useNavigate();
   const [score, setScore] = useState(null);
   const [totalQuestions, setTotalQuestions] = useState(0);
@@ -12,14 +11,9 @@ const Result = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (!user) {
-      navigate("/");
-      return;
-    }
-
     const fetchResult = async () => {
       try {
-        const response = await axios.get(`https://holly-elite-condor.glitch.me/api/result/${user.userId}`);
+        const response = await axios.get(`https://holly-elite-condor.glitch.me/api/result/${userId}`);
         if (response.data.success) {
           setScore(response.data.score);
           setTotalQuestions(response.data.totalQuestions);
@@ -33,7 +27,7 @@ const Result = () => {
     };
 
     fetchResult();
-  }, [user, navigate]);
+  }, [userId]);
 
   if (loading) return <p className="loading">Loading result...</p>;
   if (error) return <p className="error">{error}</p>;

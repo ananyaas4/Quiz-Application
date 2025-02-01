@@ -16,16 +16,21 @@ const Quiz = () => {
   useEffect(() => {
     if (!user) {
       navigate("/");
-      return;
     }
   }, [user, navigate]);
 
   const handleStartQuiz = async () => {
+    if (!user || !user.token) {
+      setError("User not authenticated.");
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await axios.get("https://holly-elite-condor.glitch.me/api/questions", {
         headers: { Authorization: `Bearer ${user.token}` },
       });
+
       if (response.data.success) {
         setQuestions(response.data.questions);
         setShowQuestions(true);
@@ -51,7 +56,7 @@ const Quiz = () => {
       });
 
       if (response.data.success) {
-        navigate("/result");
+        navigate(`/result/${user.userId}`);
       } else {
         setError("Error submitting quiz.");
       }
@@ -67,7 +72,7 @@ const Quiz = () => {
     <div className="quiz-container">
       <h2>Take the Quiz!</h2>
       {!showQuestions ? (
-        <button onClick={handleStartQuiz}>Start Quiz</button>
+        <button onClick={handleStartQuiz} className="startQuiz">Start Quiz</button>
       ) : (
         <>
           {questions.map((q) => (
