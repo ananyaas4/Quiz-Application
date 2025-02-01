@@ -8,7 +8,7 @@ import Result from "./components/Result";
 const App = () => {
   return (
     <AuthProvider>
-      <Router>
+      <Router basename="/Quiz-Application">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/quiz" element={<Quiz />} />
