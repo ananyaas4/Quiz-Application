@@ -9,7 +9,8 @@ const Quiz = () => {
   const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [showQuestions, setShowQuestions] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -17,26 +18,26 @@ const Quiz = () => {
       navigate("/");
       return;
     }
-
-    const fetchQuestions = async () => {
-      try {
-        const response = await axios.get("https://holly-elite-condor.glitch.me/api/questions", {
-          headers: { Authorization: `Bearer ${user.token}` },
-        });
-
-        if (response.data.success) {
-          setQuestions(response.data.questions);
-          setLoading(false);
-        } else {
-          setError("Failed to load questions.");
-        }
-      } catch {
-        setError("Error fetching questions.");
-      }
-    };
-
-    fetchQuestions();
   }, [user, navigate]);
+
+  const handleStartQuiz = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get("https://holly-elite-condor.glitch.me/api/questions", {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+      if (response.data.success) {
+        setQuestions(response.data.questions);
+        setShowQuestions(true);
+      } else {
+        setError("Failed to load questions.");
+      }
+    } catch {
+      setError("Error fetching questions.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleAnswerSelect = (questionId, selectedAnswer) => {
     setAnswers({ ...answers, [questionId]: selectedAnswer });
@@ -50,7 +51,7 @@ const Quiz = () => {
       });
 
       if (response.data.success) {
-        navigate(`/result/${user.userId}`);
+        navigate("/result");
       } else {
         setError("Error submitting quiz.");
       }
@@ -64,13 +65,22 @@ const Quiz = () => {
 
   return (
     <div className="quiz-container">
-      <h2>Quiz</h2>
-      {questions.map((q) => (
-        <QuizItem key={q.id} question={q} onSelectAnswer={handleAnswerSelect} />
-      ))}
-      <button onClick={handleSubmitQuiz} disabled={Object.keys(answers).length !== questions.length}>
-        Submit Quiz
-      </button>
+      <h2>Take the Quiz!</h2>
+      {!showQuestions ? (
+        <button onClick={handleStartQuiz}>Start Quiz</button>
+      ) : (
+        <>
+          {questions.map((q) => (
+            <QuizItem key={q.id} question={q} onSelectAnswer={handleAnswerSelect} />
+          ))}
+          <button
+            onClick={handleSubmitQuiz}
+            disabled={Object.keys(answers).length !== questions.length}
+          >
+            Submit Quiz
+          </button>
+        </>
+      )}
     </div>
   );
 };
